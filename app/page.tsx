@@ -1,68 +1,42 @@
-"use client";
-
-import { useState } from "react";
-import SmoothScroll from "@/components/providers/SmoothScroll";
-import StickyNav from "@/components/nav/StickyNav";
-import CartDrawer from "@/components/cart/CartDrawer";
-import SectionDrop from "@/components/section1/SectionDrop";
-import SectionCraft from "@/components/section2/SectionCraft";
-import SectionCollection from "@/components/section3/SectionCollection";
-import SectionFinale from "@/components/section4/SectionFinale";
+import Link from "next/link";
+import { AtelierRail } from "@/components/rail/AtelierRail";
+import { PatternToDrape } from "@/components/home/PatternToDrape";
+import { ColourCard } from "@/components/home/ColourCard";
+import { PleatTeaser } from "@/components/home/PleatTeaser";
+import { MANIFESTO, SALONS } from "@/lib/site";
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState(1);
-
   return (
-    <SmoothScroll>
-      <main className="relative min-h-screen bg-[#0B0B0C] text-[#EDE9E3] w-full block">
-        {/* Pinned Sticky Navigation */}
-        <StickyNav activeSection={activeSection} />
+    <>
+      <AtelierRail />
 
-        {/* Global Slide-Out Reservation Bag */}
-        <CartDrawer />
+      <section aria-labelledby="manifesto" className="grain px-[var(--gutter)] py-28 lg:py-40">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+          <blockquote className="lg:col-span-8">
+            <p id="manifesto" className="font-serif text-[clamp(30px,4.2vw,62px)] font-light leading-[1.12] tracking-[-0.01em]">
+              {MANIFESTO}
+            </p>
+            <footer className="t-label mt-6 text-muted">The house of VAELIS</footer>
+          </blockquote>
+          <div className="t-body space-y-5 lg:col-span-3 lg:col-start-10 lg:self-end">
+            <p>
+              Chrono-Fold brings that discipline to the t-shirt: six cuts, from a boxy dropped shoulder to a longline column,
+              each built from a flat two-panel pattern.
+            </p>
+            <p>
+              The house works between a salon in {SALONS[0].city} and an atelier in {SALONS[1].city}, where every piece can be tried by
+              appointment.
+            </p>
+            <Link href="/atelier" className="t-ui link inline-flex min-h-[32px] items-center">
+              About the atelier
+            </Link>
+          </div>
+        </div>
+      </section>
 
-        {/* SECTION 1: THE DROP */}
-        <SectionDrop
-          onExitState={(progress) => {
-            if (progress > 0.8) {
-              setActiveSection(2);
-            } else {
-              setActiveSection(1);
-            }
-          }}
-        />
-
-        {/* SECTION 2: THE CRAFT */}
-        <SectionCraft
-          onExitState={(progress) => {
-            if (progress > 0.94) {
-              setActiveSection(3);
-            } else if (progress > 0.08) {
-              setActiveSection(2);
-            }
-          }}
-        />
-
-        {/* SECTION 3: THE COLLECTION IN MOTION */}
-        <SectionCollection
-          onExitState={(progress) => {
-            if (progress > 0.85) {
-              setActiveSection(4);
-            } else if (progress > 0.1) {
-              setActiveSection(3);
-            }
-          }}
-        />
-
-        {/* SECTION 4: PROOF AND FINALE */}
-        <SectionFinale
-          onExitState={(progress) => {
-            if (progress > 0.1) {
-              setActiveSection(4);
-            }
-          }}
-        />
-      </main>
-    </SmoothScroll>
+      <PatternToDrape />
+      <ColourCard />
+      <PleatTeaser />
+    </>
   );
 }

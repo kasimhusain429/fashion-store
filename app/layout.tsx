@@ -1,55 +1,61 @@
 import type { Metadata, Viewport } from "next";
+import { Archivo, Newsreader } from "next/font/google";
 import "./globals.css";
+import { SmoothScroll } from "@/components/chrome/SmoothScroll";
+import { Header } from "@/components/chrome/Header";
+import { Footer } from "@/components/chrome/Footer";
+import { CartDrawer } from "@/components/chrome/CartDrawer";
+
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "VAELIS — Chrono-Fold | Haute Couture Digital Runway",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://vaelis-atelier.com"),
+  title: { default: "VAELIS — Chrono-Fold", template: "%s — VAELIS" },
   description:
-    "Architectural motion suspended in time. Explore the Monolith Cocoon Trench and limited-edition archival tailoring by Atelier Vaelis.",
-  keywords: [
-    "Vaelis",
-    "Haute Couture",
-    "Luxury Outerwear",
-    "Monolith Cocoon Trench",
-    "Bonded Silk Wool",
-    "Architectural Tailoring",
-  ],
-  authors: [{ name: "Atelier Vaelis" }],
+    "Chrono-Fold: six t-shirts cut as architecture by VAELIS, Paris and Kyoto. Browse the rail, turn each piece in 3D, and order online.",
   openGraph: {
     title: "VAELIS — Chrono-Fold",
-    description: "Architectural motion suspended in time. The Monolith Cocoon Trench.",
-    url: "https://vaelis-atelier.com",
+    description: "Six t-shirts cut as architecture. Paris and Kyoto.",
     siteName: "VAELIS",
-    images: [
-      {
-        url: "/assets/s1_hero_trench_ref.jpg",
-        width: 1200,
-        height: 1600,
-        alt: "The Monolith Cocoon Trench by Atelier Vaelis",
-      },
-    ],
-    locale: "en_US",
+    images: [{ url: "/products/monolith/obsidian-front.webp", width: 780, height: 975, alt: "Monolith Tee in Obsidian Black on a walnut hanger" }],
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B0B0C",
+  themeColor: "#d8d5ce",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className="antialiased selection:bg-[#C5A880] selection:text-[#0B0B0C]">
-        <div className="grain-overlay" aria-hidden="true" />
-        <div className="ambient-glow-top" aria-hidden="true" />
-        {children}
+    <html lang="en" className={`${archivo.variable} ${newsreader.variable}`}>
+      <body>
+        <a
+          href="#main"
+          className="t-label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-washi focus:px-4 focus:py-3"
+        >
+          Skip to content
+        </a>
+        <SmoothScroll />
+        <Header />
+        <main id="main">{children}</main>
+        <Footer />
+        <CartDrawer />
       </body>
     </html>
   );
